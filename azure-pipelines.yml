@@ -38,4 +38,4 @@ steps:
     scriptLocation: inlineScript
     inlineScript: |
      cd pyfunc
-     func azure functionapp publish ebeletest  --python --build-native-deps
+     func azure functionapp publish ebeletest1  --python --build-remote
