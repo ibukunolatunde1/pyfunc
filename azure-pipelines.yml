@@ -1,0 +1,41 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: UsePythonVersion@0
+  displayName: 'Use Python 3.8'
+  inputs:
+    versionSpec: 3.8
+
+- task: AzureCLI@2
+  displayName: 'Install host func runtime'
+  inputs:
+    azureSubscription: 'pydev-connection'
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+     curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+     sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+     
+     sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-$(lsb_release -cs)-prod $(lsb_release -cs) main" > /etc/apt/sources.list.d/dotnetdev.list'
+     sudo apt-get update
+     
+     sudo apt-get install azure-functions-core-tools
+
+- task: AzureCLI@2
+  displayName: 'Azure CLI '
+  inputs:
+    azureSubscription: 'pydev-connection'
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+     cd pyfunc
+     func azure functionapp publish ebeletest  --python --build-native-deps
