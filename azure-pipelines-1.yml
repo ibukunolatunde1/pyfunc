@@ -11,7 +11,7 @@ variables:
   azureSubscription: 'a97019d0-dfe8-43ac-9e86-7126223d96bc'
 
   # Function app name
-  functionAppName: 'funcpturt'
+  functionAppName: 'funcporet'
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
